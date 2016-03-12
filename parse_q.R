@@ -20,12 +20,19 @@ multi_handling <- function(item) {
     response <- 0
     while (response < 1 | response > length(item['options'][[1]])) {
         cat(paste0(item['prompt'][[1]], " ("))
-        response <- readline(paste0(paste(1:length(item['options'][[1]]), item['options'][[1]], collapse = " / "), " ) "))
+        response <- readline(paste0(paste(1:length(item['options'][[1]]), ":", item['options'][[1]], collapse = " / "), " ) "))
         response <- as.numeric(response)
     }
     return(response)
 }
 
-multi_handling(list(var = "Q4", prompt = "It is good right?", type = "multi", options = c("Yes", "No")))
 
-lapply(codebook, generate_prompt)
+data_entry <- function(codebook) {
+    single_row <- as.data.frame(lapply(codebook, generate_prompt), stringsAsFactors = FALSE)
+    colnames(single_row) <- sapply(codebook, function(x) x['var'])
+    return(single_row)
+}
+
+multi_handling(list(var = "Q4", prompt = "It is good right?", type = "multi", options = c(5, 6, 9, 10)))
+
+z <- data_entry(codebook)
