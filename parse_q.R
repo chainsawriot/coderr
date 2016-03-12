@@ -4,6 +4,17 @@ codebook <- list(list(var = "Q1", prompt = "Wie geht es Ihnen?", type = "text"),
                  list(var = "Q4", prompt = "It is good right?", type = "multi", options = c("Yes", "No"))
                  )
 
+simple_codebook <- list(list(var = "Q1", prompt = "Wie geht es Ihnen?", type = 'text'),
+                 list(var = "Q2", prompt = "Wie ist diem name?", type = 'text'))
+
+require(shiny)
+
+gen_textinput <- function(item) {
+    textInput(inputId = item['var'], label = item['prompt'])
+}
+
+sidebarPanel(list(numericInput("obs", "Observations:", 10), numericInput("obs2", "Observations:", 10)))
+
 generate_prompt <- function(item) {
     if (item['type'] == 'text') {
         response <- readline(paste0(prompt = item['prompt'], " "))
