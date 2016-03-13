@@ -37,13 +37,13 @@ gen_numinput <- function(item) {
 
 
 server <- function(input, output) {
-    output$datab <- renderDataTable(data.frame(input$Q1, input$Q2, input$Q3))
+    output$datab <- renderDataTable(data.frame(a = input['Q1'], input$Q2, input$Q3))
 }
 
 ui <- fluidPage(
     sidebarLayout(
-        sidebarPanel(lapply(simple_codebook, handle_item)),
-        mainPanel(h1("Testing"))
+        sidebarPanel(lapply(simple_codebook, handle_item), submitButton(text = "submit")),
+        mainPanel(h1("Testing"), dataTableOutput("datab"))
 ))
 
 shinyApp(ui = ui, server = server)
