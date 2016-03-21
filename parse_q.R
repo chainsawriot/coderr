@@ -3,6 +3,15 @@ codebook <- list(list(var = "v2", prompt = "Original: mentioned any HK politicia
                  list(var = "v3", prompt = "Added comment?", type = 'multi', options = c("Yes", "No"), when = 1, nestedquestion = list(var = "v30", prompt = "Added comment: mentioned any HK politicians, HKSAR government or Chinese government?", type = 'multi', options = c("Yes", "No"), when = 1, nestedquestion = list(var = "v31", prompt = "Which", type = 'multi_multi', options = c("Positive", "Negative", "Can't Tell")))),
                  list(var = "v4", prompt = "Agree with original posters?", type = "multi", options = c("Yes", "No", "CT")))
 
+create_item <- function(var_name, prompt, type, options = NULL, nestedquestions = NULL, when = NULL) {
+    item <- list(var_name = var_name, prompt = prompt, type = type, options = options)
+    attr(item, "class") <- "item"
+    return(item)
+}
+
+
+
+
 
 ### should change it to a switch statement
 
