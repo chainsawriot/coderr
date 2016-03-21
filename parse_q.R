@@ -3,13 +3,33 @@ codebook <- list(list(var = "v2", prompt = "Original: mentioned any HK politicia
                  list(var = "v3", prompt = "Added comment?", type = 'multi', options = c("Yes", "No"), when = 1, nestedquestion = list(var = "v30", prompt = "Added comment: mentioned any HK politicians, HKSAR government or Chinese government?", type = 'multi', options = c("Yes", "No"), when = 1, nestedquestion = list(var = "v31", prompt = "Which", type = 'multi_multi', options = c("Positive", "Negative", "Can't Tell")))),
                  list(var = "v4", prompt = "Agree with original posters?", type = "multi", options = c("Yes", "No", "CT")))
 
-create_item <- function(var_name, prompt, type, options = NULL, nestedquestions = NULL, when = NULL) {
-    item <- list(var_name = var_name, prompt = prompt, type = type, options = options)
+create_item <- function(var_name = NULL, prompt = NULL, type = NULL, options = NULL, nested_questions = NULL, when = NULL) {
+    if (is.null(var_name) | is.null(prompt)) {
+        stop("var_name or prompt should not be null.")
+    }
+    if (is.null(type) & !is.null(options)) {
+        type <- "multi"
+    }
+    if (is.null(type) & is.null(when) & is.null(nested_questions)) {
+        type <- "text"
+    }
+    item <- list(var_name = var_name, prompt = prompt, type = type, options = options, nested_questions = nested_questions, when = when)
     attr(item, "class") <- "item"
     return(item)
 }
 
+item1 <- create_item(var_name = "OS1", prompt = "有否涉及任何政治人物、壓力團體、政團、媒體或政府組織?", options = c("有", "無"), nested_questions = list(create_item(var_name = "OS2", prompt = "如有，請列出所涉的人物及組織，以及文中對其的情感",type = "multi_multi", options = c("正面", "負面", "不確定"))), when = 1)
 
+print.item <- function(obj) {
+    cat(obj$prompt, "\n")
+    cat(obj$type, "\n")
+    cat(ifelse(is.null(obj$nested_questions), "No nested question", "With nested question(s)"), "\n")
+}
+
+### when type is null:
+## if options is not null = "multi"
+## if options is null, when is null and nestedquestions is null  = "text"
+## "multi_multi" must be explicitly specified
 
 
 
